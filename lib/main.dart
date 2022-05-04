@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sample_geolocator_plugin/widgets/altitude_info.dart';
-import 'package:flutter_sample_geolocator_plugin/widgets/speed_info.dart';
 import 'package:geolocator/geolocator.dart';
 
+import 'widgets/altitude_info.dart';
 import 'widgets/heading_arrow.dart';
+import 'widgets/speed_info.dart';
 
 void main() {
   runApp(const MyApp());
