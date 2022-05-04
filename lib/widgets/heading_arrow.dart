@@ -16,8 +16,10 @@ class HeadingArrow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Transform.rotate(
-      angle: _radians(degrees: heading),
+    return AnimatedRotation(
+      turns: _radians(degrees: heading) / 2 / pi,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.decelerate,
       child: SizedBox.square(
         dimension: 200,
         child: FittedBox(
