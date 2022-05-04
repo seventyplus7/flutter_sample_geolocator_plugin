@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_sample_geolocator_plugin/geo/geo.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 import 'widgets/altitude_info.dart';
 import 'widgets/heading_arrow.dart';
@@ -17,7 +19,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Geolocator Plugin Sample',
       theme: ThemeData(primarySwatch: Colors.red, scaffoldBackgroundColor: Colors.redAccent),
-      home: const MyHomePage(),
+      home: ChangeNotifierProvider(
+        create: (_) => GeoProvider(),
+        child: const MyHomePage(),
+      ),
     );
   }
 }
@@ -27,54 +32,31 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Geolocator.checkPermission().then((permission) {
-      if (permission == LocationPermission.denied) {
-        Geolocator.requestPermission().then((requestPermission) {
-          if (requestPermission == LocationPermission.denied ||
-              requestPermission == LocationPermission.deniedForever) {
-            var errorSnackBar = const SnackBar(content: Text('Denied of required permissions'));
-            ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
-          }
-        });
-      }
-    });
-
-    LocationSettings locationSettings = const LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
-
+    var position = context.select<GeoProvider?, Position?>((geo) => geo?.position);
     return Scaffold(
-      body: StreamBuilder(
-        stream: Geolocator.getPositionStream(locationSettings: locationSettings),
-        builder: (ctx, AsyncSnapshot<Position> snapshot) {
-          if (snapshot.hasData) {
-            var position = snapshot.data;
-            return SizedBox(
+      body: position != null
+          ? SizedBox(
               width: double.infinity,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  HeadingArrow(heading: position?.heading ?? 0.0),
-                  SpeedInfo(speed: position?.speed ?? 0.0),
-                  AltitudeInfo(altitude: position?.altitude ?? 0.0)
+                  HeadingArrow(heading: position.heading),
+                  SpeedInfo(speed: position.speed),
+                  AltitudeInfo(altitude: position.altitude)
                 ],
               ),
-            );
-          }
-          return Center(
-            child: SizedBox.square(
-              dimension: 200,
-              child: FittedBox(
-                child: Icon(
-                  Icons.error,
-                  color: Colors.cyan[50],
+            )
+          : Center(
+              child: SizedBox.square(
+                dimension: 200,
+                child: FittedBox(
+                  child: Icon(
+                    Icons.error,
+                    color: Colors.cyan[50],
+                  ),
                 ),
               ),
             ),
-          );
-        },
-      ),
     );
   }
 }
