@@ -2,6 +2,8 @@
 
 A Flutter project using the Geolocator plugin.
 
+![image](https://user-images.githubusercontent.com/20613997/166651897-fb1e158f-e9c3-45df-9411-3c93ef965540.png)
+
 ## Getting Started
 
 This app displays the heading, speed, and altitude of the device using GeoLocator.getPositionStream().
