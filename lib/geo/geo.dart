@@ -20,10 +20,7 @@ class GeoProvider with ChangeNotifier {
       }
     });
 
-    LocationSettings locationSettings = const LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
-    );
+    LocationSettings locationSettings = const LocationSettings(accuracy: LocationAccuracy.high);
 
     Geolocator.getPositionStream(locationSettings: locationSettings).listen(
       (position) {
