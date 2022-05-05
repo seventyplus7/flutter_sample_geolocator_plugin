@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sample_geolocator_plugin/geo/geo.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
+import 'geo/geo.dart';
 import 'widgets/altitude_info.dart';
 import 'widgets/heading_arrow.dart';
 import 'widgets/speed_info.dart';
