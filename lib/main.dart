@@ -30,33 +30,61 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
+  Widget _currentPositionInfo(Position? position) {
+    return position != null
+        ? SizedBox(
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                HeadingArrow(heading: position.heading),
+                SpeedInfo(speed: position.speed),
+                AltitudeInfo(altitude: position.altitude)
+              ],
+            ),
+          )
+        : Center(
+            child: SizedBox.square(
+              dimension: 200,
+              child: FittedBox(
+                child: Icon(
+                  Icons.error,
+                  color: Colors.cyan[50],
+                ),
+              ),
+            ),
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var position = context.select<GeoProvider?, Position?>((geo) => geo?.position);
     return Scaffold(
-      body: position != null
-          ? SizedBox(
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  HeadingArrow(heading: position.heading),
-                  SpeedInfo(speed: position.speed),
-                  AltitudeInfo(altitude: position.altitude)
-                ],
-              ),
-            )
-          : Center(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            Positioned(
+              top: 8.0,
+              right: 8.0,
               child: SizedBox.square(
-                dimension: 200,
+                dimension: 64,
                 child: FittedBox(
-                  child: Icon(
-                    Icons.error,
-                    color: Colors.cyan[50],
+                  child: IconButton(
+                    splashRadius: 24,
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.history,
+                      color: Colors.cyan[50],
+                    ),
                   ),
                 ),
               ),
             ),
+            _currentPositionInfo(
+              context.select<GeoProvider?, Position?>((geo) => geo?.position),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
