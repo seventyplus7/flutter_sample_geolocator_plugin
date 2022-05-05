@@ -21,7 +21,7 @@ class AltitudeInfo extends StatelessWidget {
         ),
         const SizedBox(width: 8),
         Text(
-          '$altitude m',
+          '${altitude.toStringAsFixed(2)} m',
           style: Theme.of(context)
               .textTheme
               .bodyMedium
